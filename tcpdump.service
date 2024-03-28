@@ -1,0 +1,14 @@
+# /lib/systemd/system/trafficmirror-tcpdump.service
+
+[Unit]
+Description=TCP Dump service for Traffic Mirroring
+StartLimitIntervalSec=30
+StartLimitBurst=2
+
+
+[Service]
+ExecStart=/usr/bin/bash /home/ec2-user/run_tcpDump.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

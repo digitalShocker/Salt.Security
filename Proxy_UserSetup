@@ -1,0 +1,15 @@
+#UserSetup for proxy (ngnix)
+#!/bin/bash
+sudo apt-get install nginx -y
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+#
+python3 -m ensurepip --default-pip
+python3 -m pip install boto3
+
+aws s3 cp s3://saltsecurity2024/nginx.conf /etc/nginx/nginx.conf
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
+sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+Restart nginx

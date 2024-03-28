@@ -1,0 +1,13 @@
+# /lib/systemd/system/fileJson.service
+
+[Unit]
+Description=file.list Json Update
+Wants=fileJson.timer
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash /home/ec2-user/fileJson.sh
+
+
+[Install]
+WantedBy=multi-user.target

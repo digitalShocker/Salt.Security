@@ -1,0 +1,37 @@
+#UserSetup tcpDump (SenorVM)
+#!/bin/bash
+
+mount_s3_download_link="https://s3.amazonaws.com/mountpoint-s3-release/latest/x86_64/mount-s3.rpm"
+sudo wget $mount_s3_download_link
+sudo yum install mount-s3.rpm -y
+sudo mount-s3 --version
+sudo mkdir /home/ec2-user/mnt/
+ # sudo mount-s3 ${TCPDUMP_STORAGE_S3_BUCKET} /home/ec2-user/packet-captures/ --prefix "packet-captures/" --dir-mode 0777
+
+sudo mount-s3 --dir-mode 0777 --allow-other saltsecurity2024 /home/ec2-user/mnt/
+
+aws s3 cp S3ProjectDir to /home/ec2-user/runtcpDump.sh
+
+sudo chmod 644 /lib/systemd/system/trafficmirror-tcpdump.service
+sudo chmod 644 /lib/systemd/system/fileJson.service
+sudo chmod 644 /lib/systemd/system/fileJson.timer
+
+sudo systemctl daemon-reload
+sudo systemctl enable trafficmirror-tcpdump.service
+sudo systemctl enable fileJson.service
+sudo systemctl enable fileJson.timer
+
+sudo systemctl start trafficmirror-tcpdump.service
+sudo systemctl start fileJson.service
+sudo systemctl start fileJson.timer
+
+sudo systemctl status trafficmirror-tcpdump.service
+sudo systemctl status fileJson.service
+sudo systemctl status fileJson.timer
+
+
+python3 -m ensurepip --default-pip
+python3 -m pip install boto3
+
+#tcpDump Process options
+sudo tcpdump -i ens5 -s 0 -Z root -G 60 -w /home/ec2-user/mnt/$INSTANCE_ID/_%Y-%m-%d-%H.%M.%S.pcap

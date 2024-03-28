@@ -1,0 +1,19 @@
+READ.ME
+
+Creation steps
+1) Create VPC
+2) create 2 subnets
+3) add the IGW to one subnet
+4) create security group for public subnet
+5) start t3.micro instance of ubuntu
+6) install nginx
+7) download nginx config from s3
+8) restart nginx
+
+Traffic Monitor (sensorVM)
+1) setup target
+2) setup session
+3) setup filter
+4) deploy script to system, include in user data
+5) saved pcaps go to s3 (mount/api/accesspoint)
+6)

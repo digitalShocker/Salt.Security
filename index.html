@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bucket Files List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        ul {
+            list-style-type: none;
+        }
+        li {
+            margin: 5px 0;
+        }
+        a {
+            text-decoration: none;
+            color: blue;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Files in Bucket</h1>
+    <ul id="fileList">Loading files...</ul>
+
+    <script>
+        // Replace YOUR-BUCKET-NAME with your actual bucket name
+        const bucketName = 'saltsecurity2024';
+        const fileUrl = `https://${bucketName}.s3.amazonaws.com/file_list.json`;
+
+        fetch(fileUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(files => {
+                let fileListHtml = '';
+                files.forEach(file => {
+                    const fileLink = `https://${bucketName}.s3.amazonaws.com/${file}`;
+                    fileListHtml += `<li><a href="${fileLink}" download>${file}</a></li>`;
+                });
+                document.getElementById('fileList').innerHTML = fileListHtml;
+            })
+            .catch(error => {
+                console.error('Error fetching file list:', error);
+                document.getElementById('fileList').innerHTML = 'Failed to load files.';
+            });
+    </script>
+</body>
+</html>
+

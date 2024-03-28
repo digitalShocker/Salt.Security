@@ -1,0 +1,12 @@
+# /lib/systemd/system/fileJson.timer
+
+[Unit]
+Description=fileUpdateProcess
+Requires=fileJson.service
+
+[Timer]
+Unit=fileJson.service
+OnCalendar=*:0/2
+
+[Install]
+WantedBy=timers.target
